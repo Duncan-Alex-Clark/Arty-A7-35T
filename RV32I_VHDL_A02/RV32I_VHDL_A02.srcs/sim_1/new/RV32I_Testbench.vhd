@@ -21,7 +21,7 @@ architecture Behavioral of RS32I_Testbench is
              Data_OUT, Instruction_OUT : out unsigned(31 downto 0)); -- the output of the memory at ADDR
     end component;
     
-    constant W: integer := 6;
+    constant W: integer := 18;
     type Iarr is array(0 to W) of unsigned(31 downto 0);
     -- Write a program which counts by 1
     constant Instr_List: Iarr := (
@@ -33,8 +33,26 @@ architecture Behavioral of RS32I_Testbench is
     x"0FF2A393", -- Set t2 = 1 if 0 < 0FF
     x"FFF32393", -- Set t2 = 1 if FF0 < -1, else set t2 to 0
     -- SLTIU Test
-    x"",
-    x""
+    x"FFF33393",
+    x"00033393",
+    -- XORI Test
+    x"FFF34313", -- Set t1 = t1 xor FFFFFFFF | FFFFF00F
+    x"ABC34313", -- Set t1 = t1 xor FFFFFABC | 00000AB3
+    -- ORI Test
+    x"AAA36313", -- Set t1 = 00000AB3 or FFFFFAAA | FFFFFABB
+    x"0C636313", -- Set t1 = FFFFFABB or 000000C6 | FFFFFAFF
+    -- ANDI Test
+    x"7BC37313", -- set t1 = FFFFFAFF and 000007BC | 000002BC
+    x"AAA37313", -- set t1 = 000002BC and FFFFFAAA | 000002A8
+    -- LW Test
+    x"0033A383", -- set t2 = mem(0 + 3) | 0FF2A393
+    x"00328293", -- ADD 0x003 to 0 and store in register 5
+    x"FFF2A383", -- Store data at address 3 - 1 in register 7 (FF230313)
+    -- LH Test
+    x"00029383", -- Load half word at base address 3 and store in register 7 | 0000A393
+    x"00B29383", -- Load half word at base address 3 + 10 into register 7 | 00008293
+    x"FFF29383" -- Load half word at base address 3 - 1 into register 7 | 00000313
+    -- LB Test
     );
     
     signal CS, WE, CLK: std_logic := '0';
@@ -88,7 +106,7 @@ begin
         init <= '0';
         wait until rising_edge(CLK);
         rst <= '0';
-        
+        SEL <= "ZZ";
         for i in 0 to W loop
             wait until Instruction_IN'event;
         end loop;

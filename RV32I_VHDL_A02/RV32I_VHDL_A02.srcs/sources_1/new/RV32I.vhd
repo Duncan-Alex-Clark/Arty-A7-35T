@@ -34,19 +34,19 @@ architecture Behavioral of RV32I is
                        BLTU,
                        BGEU,
                        LB,
-                       LH,
-                       LW,
+                       LH, -- Instruction tested and working
+                       LW, -- Instruction tested and working
                        LBU,
                        LHU,
                        SB,
                        SH,
                        SW,
                        ADDI, -- Instruction tested and working
-                       SLTI,
-                       SLTIU,
-                       XORI,
-                       ORI,
-                       ANDI,
+                       SLTI, -- Instruction tested and working
+                       SLTIU, -- Instruction tested and working
+                       XORI, -- Instruction tested and working
+                       ORI, -- Instruction tested and working
+                       ANDI, -- Instruction tested and working
                        SLLI,
                        SRLI,
                        SRAI,
@@ -152,6 +152,7 @@ begin
     ADDR <= x"ZZZZZZZZ" when MEM_reading = '0' else ALU_Result; -- ADDR is driven to high impedance when memory is not being read, else ALU_Result
     PC_OUT <= PC; -- Attach the internal PC to the PC_OUT port
     ALU_A <= PC when Op = JAL
+             --else Data_IN when MEM_reading = '1'
              else DataA; -- The A input of the ALU is connected the the DataA output of the Register component
     ALU_B <= DataB when Format = R or Format = S or Format = B
              else Imm_Ext when Format = I or Format = U or Format = J;
@@ -161,6 +162,7 @@ begin
     RegB <= rs2;
     RegC <= rd;
     DW <= nPC when Op = JAL or Op = JALR
+          else Data_IN when MEM_reading = '1'
           else ALU_Result;
     
     -- Control Signals
@@ -171,6 +173,7 @@ begin
     begin  
         -- Initialize status and control signals to 0
         CS <= '0';
+        RegWE <= '0';
         case State is
             when 0 => -- Instruction fetch
                 nState <= 1; -- Progress to the next state
@@ -178,7 +181,6 @@ begin
                 CS <= '1'; -- Enable the CS pin to allow for memory operation
                 SEL_save <= "00";
                 WE <= '0';
-                RegWE <= '0';
                 MEM_Reading <= '0';
             when 1 => -- Instruction decode
             -- Instruction decode is performed after the instruction is fetched from memory. The instruction is comprised of many parts
@@ -266,7 +268,7 @@ begin
                     when others =>
                 end case;
             when 2 => -- Instruction execute
-                nState <= 3;
+                nState <= 0;
                 RegWE <= '1' when Format = R or Format = I or Format = U or Format = J
                          else '0';
                 case Op is
@@ -281,8 +283,12 @@ begin
                     when BLTU => ALU_Result <= unsigned(signed(ALU_A) + signed(ALU_B));
                     when BGEU => ALU_Result <= unsigned(signed(ALU_A) + signed(ALU_B));
                     when LB => MEM_Reading <= '1';
-                    when LH => MEM_Reading <= '1';
-                    when LW => MEM_Reading <= '1';
+                    when LH => 
+                        MEM_Reading <= '1'; RegWE <= '0'; nState <= 3;
+                        ALU_Result <= to_unsigned((to_integer(ALU_A)*4) + (to_integer(Imm_Ext)*4), 32);
+                    when LW => 
+                        MEM_Reading <= '1'; RegWE <= '0'; nState <= 3;
+                        ALU_Result <= to_unsigned((to_integer(ALU_A)*4) + (to_integer(Imm_Ext)*4), 32);
                     when LBU => MEM_Reading <= '1';
                     when LHU => MEM_Reading <= '1';
                     when SB => WE <= '1';
@@ -310,11 +316,14 @@ begin
                     when others =>
                 end case;
             when 3 => -- Memory access
-            if MEM_Reading = '1' or WE = '1' then nState <= 4;
+            if MEM_Reading = '1' and WE = '0' then CS <= '1'; RegWE <= '1'; nState <= 0;
+            elsif MEM_Reading = '1' or WE = '1' then CS <= '1'; nState <= 4;
             else nState <= 0;
             end if;
-            when 4 => -- Write back
+            when 4 => -- Write register
+            WE <= '1';
             nState <= 0;
+            CS <= '1';
             when others =>
         end case;
     end process;
@@ -338,7 +347,7 @@ begin
 --                      else nPC;
             end if;
             if State = 0 then Instruction <= Instruction_IN; end if; -- state 0 is the fetch state
-            if state = 3 and MEM_Reading = '1' then MEM_Reading <= '1'; CS <= '1'; end if; 
+            --if state = 3 and MEM_Reading = '1' then MEM_Reading <= '1'; end if; 
         end if;
     end process;
     
