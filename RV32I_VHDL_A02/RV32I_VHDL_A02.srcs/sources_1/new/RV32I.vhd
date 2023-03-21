@@ -283,6 +283,8 @@ begin
                     when BLTU => ALU_Result <= unsigned(signed(ALU_A) + signed(ALU_B));
                     when BGEU => ALU_Result <= unsigned(signed(ALU_A) + signed(ALU_B));
                     when LB => MEM_Reading <= '1';
+                        MEM_Reading <= '1'; RegWE <= '0'; nState <= 3;
+                        ALU_Result <= to_unsigned((to_integer(ALU_A)*4) + (to_integer(Imm_Ext)*4), 32);
                     when LH => 
                         MEM_Reading <= '1'; RegWE <= '0'; nState <= 3;
                         ALU_Result <= to_unsigned((to_integer(ALU_A)*4) + (to_integer(Imm_Ext)*4), 32);
