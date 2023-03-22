@@ -314,8 +314,12 @@ begin
                     when LW => 
                         MEM_Reading <= '1'; RegWE <= '0'; nState <= 3;
                         ALU_Result <= to_unsigned((to_integer(ALU_A)) + (to_integer(Imm_Ext)), 32);
-                    when LBU => MEM_Reading <= '1';
-                    when LHU => MEM_Reading <= '1';
+                    when LBU => 
+                        MEM_Reading <= '1'; RegWE <= '0'; nState <= 3;
+                        ALU_Result <= to_unsigned((to_integer(ALU_A)) + (to_integer(Imm_Ext)), 32);
+                    when LHU => 
+                        MEM_Reading <= '1'; RegWE <= '0'; nState <= 3;
+                        ALU_Result <= to_unsigned((to_integer(ALU_A)) + (to_integer(Imm_Ext)), 32);
                     when SB => WE <= '1';
                     when SH => WE <= '1';
                     when SW => WE <= '1';

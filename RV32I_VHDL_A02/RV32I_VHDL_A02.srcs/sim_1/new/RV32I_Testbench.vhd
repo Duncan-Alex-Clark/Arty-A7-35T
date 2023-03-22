@@ -21,7 +21,7 @@ architecture Behavioral of RS32I_Testbench is
              Data_OUT, Instruction_OUT : out unsigned(31 downto 0)); -- the output of the memory at ADDR
     end component;
     
-    constant W: integer := 22;
+    constant W: integer := 24;
     type Iarr is array(0 to W) of unsigned(31 downto 0);
     -- Write a program which counts by 1
     constant Instr_List: Iarr := (
@@ -57,7 +57,11 @@ architecture Behavioral of RS32I_Testbench is
     -- LB Test
     x"FFE28383", -- Load a byte of memory(3-2) into register 7 | 00000003
     x"00328383", -- Load a byte of memory(3+3) into register 7 | FFFFFFF3
-    x"02128383" -- Load a byte of memory 0x03 + 0x21 into register 7 | 00000013
+    x"02128383", -- Load a byte of memory 0x03 + 0x21 into register 7 | 00000013
+    -- LHU Test
+    -- Note: Leading integers of 1 should not cause a sign extend
+    x"0092D383", -- Load half word at base address 0x0C into register 7 | 0000A393
+    x"FFD2D383" -- Load half word at base address 0x00 into register 7 | 00000313
     );
     
     signal CS, WE, CLK: std_logic := '0';
