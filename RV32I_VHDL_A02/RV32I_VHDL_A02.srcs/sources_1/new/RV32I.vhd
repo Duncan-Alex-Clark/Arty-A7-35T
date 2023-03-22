@@ -36,8 +36,8 @@ architecture Behavioral of RV32I is
                        LB, -- Instruction tested and working
                        LH, -- Instruction tested and working
                        LW, -- Instruction tested and working
-                       LBU,
-                       LHU,
+                       LBU, -- Instruction tested and working
+                       LHU, -- Instruction tested and working
                        SB,
                        SH,
                        SW,
