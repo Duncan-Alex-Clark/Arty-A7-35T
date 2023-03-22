@@ -69,20 +69,13 @@ begin
                     end if;
                 when "01" => -- half word operation
                     if ADDR(11 downto 0) <= 4090 then
-                        Data_Output <= x"FFFF"
-                                       &InstructionMemory(to_integer(ADDR(11 downto 0))+1)
-                                       &InstructionMemory(to_integer(ADDR(11 downto 0))) 
-                                       when InstructionMemory(to_integer(ADDR(11 downto 0))+1)(7) = '1'
-                                  else x"0000"
+                        Data_Output <= x"0000"
                                        &InstructionMemory(to_integer(ADDR(11 downto 0))+1)
                                        &InstructionMemory(to_integer(ADDR(11 downto 0)));
                     end if;                                 
                 when "10" => -- byte operation
                     if ADDR(11 downto 0) <= 4092 then
-                        Data_Output <= x"FFFFFF"
-                                       &InstructionMemory(to_integer(ADDR(11 downto 0)))
-                                       when InstructionMemory(to_integer(ADDR(11 downto 0)))(7) = '1'
-                                  else x"FFFFFF"
+                        Data_Output <= x"000000"
                                        &InstructionMemory(to_integer(ADDR(11 downto 0)));
                     end if;
                 when others =>

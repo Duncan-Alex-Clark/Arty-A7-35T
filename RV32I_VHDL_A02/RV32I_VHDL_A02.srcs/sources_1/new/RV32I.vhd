@@ -74,7 +74,7 @@ architecture Behavioral of RV32I is
     signal State, nState : integer range 0 to 4 := 0;
     signal RegWE, MEM_Reading : std_logic; -- CPU status and control signals 
     signal RegA, RegB, RegC : unsigned(4 downto 0);
-    signal DW, DataA, DataB : unsigned(31 downto 0);   
+    signal DW, DataA, DataB, Data_IN_Ext : unsigned(31 downto 0);   
     signal PC, nPC : unsigned(31 downto 0) := x"00000000";
     signal ALU_A, ALU_B, ALU_Result, Imm_Ext : unsigned(31 downto 0) := x"ZZZZZZZZ";
     signal Instruction : unsigned(31 downto 0) := x"ZZZZZZZZ";
@@ -120,7 +120,7 @@ begin
               &Instruction(30 downto 21); -- imm(10 downto 1)
               
 -- Immediate extensions for each decoded immediate type
-    process(CLK, Format, imm_I, imm_S, imm_B, imm_U, imm_J)
+    Immediate_Extension : process(CLK, Format, imm_I, imm_S, imm_B, imm_U, imm_J)
     begin
         case Format is
             when I =>
@@ -139,6 +139,29 @@ begin
                            else x"00" & "000" & imm_J & '0';
             when others =>
         end case;
+    end process;
+    
+    -- Data coming into the core from memory must be sign extended when the instruction requires. Otherwise,
+    -- the incoming data can remain unchanged.
+    Data_IN_Extension : process(CLK, Data_IN, SEL)
+    begin
+        if Op = LB or Op = LH or Op = LW then
+            case SEL is
+                when "01" =>
+                   Data_IN_Ext <= x"FFFF"
+                                  &Data_IN(15 downto 0) when Data_IN(15) = '1' 
+                             else x"0000"
+                                  &Data_IN(15 downto 0);
+                when "10" =>
+                    Data_IN_Ext <= x"FFFFFF"
+                                  &Data_IN(7 downto 0) when Data_IN(7) = '1' 
+                             else x"000000"
+                                  &Data_IN(7 downto 0);
+                when others =>
+            end case;
+        else
+            Data_IN_Ext <= Data_IN;
+        end if;
     end process;
     
     -- Decode the instruction and deterime the instruction format
@@ -162,7 +185,7 @@ begin
     RegB <= rs2;
     RegC <= rd;
     DW <= nPC when Op = JAL or Op = JALR
-          else Data_IN when MEM_reading = '1'
+          else Data_IN_Ext when MEM_reading = '1'
           else ALU_Result;
     
     -- Control Signals

@@ -52,11 +52,11 @@ architecture Behavioral of RS32I_Testbench is
     x"0052A383", -- Store instruction 2 into register 7 | FF230313 
     -- LH Test
     x"00029383", -- Load half word at base address 3 and store in register 7 | 0000137F
-    x"00A29383", -- Load half word at base address 3 + 10 into register 7 | 0000F2A3
+    x"00A29383", -- Load half word at base address 3 + 10 into register 7 | FFFFF2A3
     x"FFF29383", -- Load half word at base address 3 - 1 into register 7 | 00007FF3
     -- LB Test
     x"FFE28383", -- Load a byte of memory(3-2) into register 7 | 00000003
-    x"00328383", -- Load a byte of memory(3+3) into register 7 | 000000F3
+    x"00328383", -- Load a byte of memory(3+3) into register 7 | FFFFFFF3
     x"02128383" -- Load a byte of memory 0x03 + 0x21 into register 7 | 00000013
     );
     
