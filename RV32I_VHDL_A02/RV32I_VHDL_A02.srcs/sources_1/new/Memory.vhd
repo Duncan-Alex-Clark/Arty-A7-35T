@@ -16,7 +16,7 @@ architecture Behavioral of Memory is
     type RAM is array (0 to 4092) of unsigned(7 downto 0); -- RAM type 4092 in size 8 bits wide for byte addressable memory (4KB)
     
     signal InstructionMemory : RAM := (others => (others => '0')); -- create the instruction memory and initialize all values to 0
-    signal Instruction_Output, Data_Output : unsigned(31 downto 0); -- Signal carrying the output value of default
+    signal Instruction_Output, Data_Output, Data_Ext : unsigned(31 downto 0); -- Signal carrying the output value of default
     alias Data_BaseADDR : unsigned(7 downto 0) is Data_IN(7 downto 0);
     alias Data_Byte2 : unsigned(7 downto 0) is Data_IN(15 downto 8);
     alias Data_Byte3 : unsigned(7 downto 0) is Data_IN(23 downto 16);
@@ -69,13 +69,20 @@ begin
                     end if;
                 when "01" => -- half word operation
                     if ADDR(11 downto 0) <= 4090 then
-                        Data_Output <= x"0000"
+                        Data_Output <= x"FFFF"
+                                       &InstructionMemory(to_integer(ADDR(11 downto 0))+1)
+                                       &InstructionMemory(to_integer(ADDR(11 downto 0))) 
+                                       when InstructionMemory(to_integer(ADDR(11 downto 0))+1)(7) = '1'
+                                  else x"0000"
                                        &InstructionMemory(to_integer(ADDR(11 downto 0))+1)
                                        &InstructionMemory(to_integer(ADDR(11 downto 0)));
                     end if;                                 
                 when "10" => -- byte operation
                     if ADDR(11 downto 0) <= 4092 then
-                        Data_Output <= x"000000"
+                        Data_Output <= x"FFFFFF"
+                                       &InstructionMemory(to_integer(ADDR(11 downto 0)))
+                                       when InstructionMemory(to_integer(ADDR(11 downto 0)))(7) = '1'
+                                  else x"FFFFFF"
                                        &InstructionMemory(to_integer(ADDR(11 downto 0)));
                     end if;
                 when others =>

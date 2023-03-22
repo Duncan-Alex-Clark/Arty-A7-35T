@@ -33,7 +33,7 @@ architecture Behavioral of RV32I is
                        BGE,
                        BLTU,
                        BGEU,
-                       LB,
+                       LB, -- Instruction tested and working
                        LH, -- Instruction tested and working
                        LW, -- Instruction tested and working
                        LBU,

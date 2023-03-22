@@ -1,4 +1,4 @@
-Running: xsim.dir/RS32I_Testbench_behav/xsimk.exe -simmode gui -wdb RS32I_Testbench_behav.wdb -simrunnum 0 -socket 56733
+Running: xsim.dir/RS32I_Testbench_behav/xsimk.exe -simmode gui -wdb RS32I_Testbench_behav.wdb -simrunnum 0 -socket 57210
 Design successfully loaded
-Design Loading Memory Usage: 7316 KB (Peak: 7316 KB)
+Design Loading Memory Usage: 7292 KB (Peak: 7292 KB)
 Design Loading CPU Usage: 0 ms
