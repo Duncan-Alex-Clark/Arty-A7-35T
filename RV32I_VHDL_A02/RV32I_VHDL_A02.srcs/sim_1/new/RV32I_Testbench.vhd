@@ -21,7 +21,7 @@ architecture Behavioral of RS32I_Testbench is
              Data_OUT, Instruction_OUT : out unsigned(31 downto 0)); -- the output of the memory at ADDR
     end component;
     
-    constant W: integer := 16;
+    constant W: integer := 22;
     type Iarr is array(0 to W) of unsigned(31 downto 0);
     -- Write a program which counts by 1
     constant Instr_List: Iarr := (
@@ -49,14 +49,15 @@ architecture Behavioral of RS32I_Testbench is
     x"0033A383", -- set t2 = 0x00+0x03 | 0x03, 04, 05, 06 -> F303137F
     x"00328293", -- ADD 0x003 to 0 and store in register 5
     x"FFF2A383", -- Store data at address 3 - 1 in register 7 | 0x02, 03, 04, 05 -> 03137FF3
-    x"0052A383" -- Store instruction 2 into register 7 | FF230313 
+    x"0052A383", -- Store instruction 2 into register 7 | FF230313 
     -- LH Test
---    x"00029383", -- Load half word at base address 3 and store in register 7 | 0000A393
---    x"00B29383", -- Load half word at base address 3 + 10 into register 7 | 00008293
---    x"FFF29383", -- Load half word at base address 3 - 1 into register 7 | 00000313
+    x"00029383", -- Load half word at base address 3 and store in register 7 | 0000137F
+    x"00A29383", -- Load half word at base address 3 + 10 into register 7 | 0000FF2A
+    x"FFF29383", -- Load half word at base address 3 - 1 into register 7 | 00007FF3
     -- LB Test
---    x"FFE28383", -- Load a byte of memory(3-2) into register 7 | 00000013
---    x"00328383" -- Load a byte of memory(3+3) into register 17 | 00000093
+    x"FFE28383", -- Load a byte of memory(3-2) into register 7 | 00000003
+    x"00328383", -- Load a byte of memory(3+3) into register 7 | 000000F3
+    x"02128383" -- Load a byte of memory 0x03 + 0x21 into register 7 | 00000013
     );
     
     signal CS, WE, CLK: std_logic := '0';
