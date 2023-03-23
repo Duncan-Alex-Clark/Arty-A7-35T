@@ -251,6 +251,8 @@ begin
                                 when others =>
                             end case;
                         else
+                            if funct7 = "0000000" and funct3 = "101" then Op <= SRLI; end if;
+                            if funct7 = "0100000" and funct3 = "101" then Op <= SRAI; end if;  
                             case funct3 is
                                 when "000" => Op <= ADDI;
                                 when "010" => Op <= SLTI;
@@ -258,7 +260,7 @@ begin
                                 when "100" => Op <= XORI;
                                 when "110" => Op <= ORI;
                                 when "111" => Op <= ANDI;
-                                when others =>
+                                when "001" => Op <= SLLI;   
                             end case;
                         end if;
                     when S =>
