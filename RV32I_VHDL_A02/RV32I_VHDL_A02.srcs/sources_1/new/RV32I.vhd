@@ -47,11 +47,11 @@ architecture Behavioral of RV32I is
                        XORI, -- Instruction tested and working
                        ORI, -- Instruction tested and working
                        ANDI, -- Instruction tested and working
-                       SLLI,
-                       SRLI,
-                       SRAI,
-                       ADD,
-                       SUB,
+                       SLLI, -- Instruction tested and working
+                       SRLI, -- Instruction tested and working
+                       SRAI, -- Instruction tested and working
+                       ADD, -- Instruction tested and working
+                       SUB, -- Instruction tested and working
                        SLL_R, -- 
                        SLT,
                        SLTU,
@@ -261,6 +261,7 @@ begin
                                 when "110" => Op <= ORI;
                                 when "111" => Op <= ANDI;
                                 when "001" => Op <= SLLI;   
+                                when others =>
                             end case;
                         end if;
                     when S =>
@@ -333,7 +334,7 @@ begin
                     when ANDI => ALU_Result <= ALU_A and ALU_B;
                     when SLLI => ALU_Result <= ALU_A sll to_integer(Instruction(24 downto 20));
                     when SRLI => ALU_Result <= ALU_A srl to_integer(Instruction(24 downto 20));
-                    when SRAI => ALU_Result <= ALU_A sra to_integer(Instruction(24 downto 20));
+                    when SRAI => ALU_Result <= unsigned(signed(ALU_A) sra to_integer(Instruction(24 downto 20)));
                     when ADD => ALU_Result <= unsigned(signed(ALU_A) + signed(ALU_B));
                     when SUB => ALU_Result <= unsigned(signed(ALU_A) - signed(ALU_B));
                     when SLL_R => ALU_Result <= unsigned(signed(ALU_A) + signed(ALU_B));

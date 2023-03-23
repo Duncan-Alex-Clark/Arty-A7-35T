@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="159.777 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,168.045 ns"></ZoomEndTime>
-      <Cursor1Time time="311.431 ns"></Cursor1Time>
+      <ZoomStartTime time="2,934.200 ns"></ZoomStartTime>
+      <ZoomEndTime time="3,325.001 ns"></ZoomEndTime>
+      <Cursor1Time time="3,112.800 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="404"></NameColumnWidth>
-      <ValueColumnWidth column_width="184"></ValueColumnWidth>
+      <ValueColumnWidth column_width="178"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="6" />
+   <WVObjectSize size="5" />
    <wvobject fp_name="/RS32I_Testbench/CLK" type="logic">
       <obj_property name="ElementShortName">CLK</obj_property>
       <obj_property name="ObjectShortName">CLK</obj_property>
@@ -96,12 +96,13 @@
       </wvobject>
    </wvobject>
    <wvobject fp_name="/RS32I_Testbench/Instr_List" type="array">
-      <obj_property name="ElementShortName">Instr_List[0:26][31:0]</obj_property>
-      <obj_property name="ObjectShortName">Instr_List[0:26][31:0]</obj_property>
+      <obj_property name="ElementShortName">Instr_List[0:34][31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr_List[0:34][31:0]</obj_property>
    </wvobject>
    <wvobject fp_name="group28" type="group">
       <obj_property name="label">Register Signals</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/RS32I_Testbench/CPU/GP_Registers/WE" type="logic">
          <obj_property name="ElementShortName">WE</obj_property>
          <obj_property name="ObjectShortName">WE</obj_property>
@@ -129,6 +130,27 @@
       <wvobject fp_name="/RS32I_Testbench/CPU/GP_Registers/DataB" type="array">
          <obj_property name="ElementShortName">DataB[31:0]</obj_property>
          <obj_property name="ObjectShortName">DataB[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="group4323" type="group">
+         <obj_property name="label">CPU Signals</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject fp_name="/RS32I_Testbench/CPU/MEM_Reading" type="logic">
+            <obj_property name="ElementShortName">MEM_Reading</obj_property>
+            <obj_property name="ObjectShortName">MEM_Reading</obj_property>
+         </wvobject>
+         <wvobject fp_name="/RS32I_Testbench/CPU/RegWE" type="logic">
+            <obj_property name="ElementShortName">RegWE</obj_property>
+            <obj_property name="ObjectShortName">RegWE</obj_property>
+         </wvobject>
+         <wvobject fp_name="/RS32I_Testbench/CPU/State" type="other">
+            <obj_property name="ElementShortName">State</obj_property>
+            <obj_property name="ObjectShortName">State</obj_property>
+         </wvobject>
+         <wvobject fp_name="/RS32I_Testbench/CPU/Op" type="other">
+            <obj_property name="ElementShortName">Op</obj_property>
+            <obj_property name="ObjectShortName">Op</obj_property>
+         </wvobject>
       </wvobject>
       <wvobject fp_name="/RS32I_Testbench/CPU/GP_Registers/Registers" type="array">
          <obj_property name="ElementShortName">Registers[0:31][31:0]</obj_property>
@@ -183,26 +205,6 @@
       <wvobject fp_name="/RS32I_Testbench/MEM/Data_Output" type="array">
          <obj_property name="ElementShortName">Data_Output[31:0]</obj_property>
          <obj_property name="ObjectShortName">Data_Output[31:0]</obj_property>
-      </wvobject>
-   </wvobject>
-   <wvobject fp_name="group4323" type="group">
-      <obj_property name="label">CPU Signals</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="/RS32I_Testbench/CPU/MEM_Reading" type="logic">
-         <obj_property name="ElementShortName">MEM_Reading</obj_property>
-         <obj_property name="ObjectShortName">MEM_Reading</obj_property>
-      </wvobject>
-      <wvobject fp_name="/RS32I_Testbench/CPU/RegWE" type="logic">
-         <obj_property name="ElementShortName">RegWE</obj_property>
-         <obj_property name="ObjectShortName">RegWE</obj_property>
-      </wvobject>
-      <wvobject fp_name="/RS32I_Testbench/CPU/State" type="other">
-         <obj_property name="ElementShortName">State</obj_property>
-         <obj_property name="ObjectShortName">State</obj_property>
-      </wvobject>
-      <wvobject fp_name="/RS32I_Testbench/CPU/Op" type="other">
-         <obj_property name="ElementShortName">Op</obj_property>
-         <obj_property name="ObjectShortName">Op</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

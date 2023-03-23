@@ -21,7 +21,7 @@ architecture Behavioral of RS32I_Testbench is
              Data_OUT, Instruction_OUT : out unsigned(31 downto 0)); -- the output of the memory at ADDR
     end component;
     
-    constant W: integer := 27;
+    constant W: integer := 39;
     type Iarr is array(0 to W) of unsigned(31 downto 0);
     -- Write a program which counts by 1
     constant Instr_List: Iarr := (
@@ -66,20 +66,23 @@ architecture Behavioral of RS32I_Testbench is
     x"FFF2C383", -- Load byte from address 0x02 into register 7 | 000000F3
     x"0042C383", -- Load byte from address 0x07 into register 7 | 0000007F
     -- SLLI Test
-    x"00129293" -- Shift 3<<1 = 6
---    x"",
+    x"00229293", -- Shift 3<<2 = C
+    x"00429293", -- Shift 12<<4 = C0
     -- SRLI Test
---    x"",
---    x"",
+    x"0012D293", -- Shift C0>>1 = 60
+    x"0052D293", -- Shift 60>>5 = 3
     -- SRAI Test
---    x"",
---    x"",
+    x"9FF2E293", -- Initialize with a negative value -> FFFFFFFF
+    x"4042D293", -- Shift arithmatic right FFFFFFFF>>4 -> 8FFFFFFF
+    x"0AA2F293", -- Prepare the register with a positive number
+    x"4042D293", -- SRA by 4
     -- ADD Test
---    x"",
---    x"",
+    x"006382B3", -- ADD 2A8 + 7F = 327
+    x"9FF2E293", -- 0xFFFFFFFF into register 5
+    x"005302B3", -- ADD FFFFFBFF + 2A8 = FFFFFEA7
     -- SUB Test
---    x"",
---    x""
+    x"407303B3", -- 2A8 - 7F = 229
+    x"40538333" -- 0x229 - 0xFFFFFEA7 = 382
     -- Break
     -- SLL Test
     -- SLT Test
